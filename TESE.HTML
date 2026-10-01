@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Prueba de Conexión Supabase</title>
+</head>
+<body style="font-family: Arial, sans-serif; text-align: center; margin-top: 50px;">
+    <h1>Estado de la Conexión con Supabase</h1>
+    <p id="estado" style="font-size: 18px; color: gray;">Probando conexión...</p>
+
+    <script type="module">
+        import { supabase } from './supabaseClient.js'
+
+        async function probarConexion() {
+            const estadoEl = document.getElementById('estado');
+            try {
+                // Intentamos consultar la tabla 'productos' que creamos
+                const { data, error } = await supabase.from('productos').select('*').limit(1);
+                
+                if (error) {
+                    throw error;
+                }
+                
+                estadoEl.style.color = 'green';
+                estadoEl.innerHTML = '¡Conexión exitosa! El sistema ya se comunica con Supabase correctamente.';
+                console.log('Datos de prueba:', data);
+            } catch (err) {
+                estadoEl.style.color = 'red';
+                estadoEl.innerHTML = 'Hubo un error al conectar: ' + err.message;
+                console.error(err);
+            }
+        }
+
+        probarConexion();
+    </script>
+</body>
+</html>
